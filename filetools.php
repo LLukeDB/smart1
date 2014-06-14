@@ -1,0 +1,141 @@
+<?php
+
+/**
+ * Creates zip-file from the directory.
+ *
+ * @param string $dir
+ * @param string $file
+ */
+function create_zip($dir, $file) {
+	$zipArchive = new ZipArchive ();
+	if ($zipArchive->open ($file, ZipArchive::OVERWRITE )) {
+		addFolderToZip ( $dir, $zipArchive );
+		$res = $zipArchive->close ();
+		if ($res === TRUE) {
+			echo "zip created";
+		} else {
+			echo "creating zip failed! " . $res;
+			debugging("DEBUG-> " . "creating zip failed (close)");
+		}
+	} else {
+		debugging("DEBUG-> " . "creating zip failed (open)");
+		echo "creating zip failed!";
+	}
+}
+
+/**
+ * Function to recursively add a directory,
+ * sub-directories and files to a zip archive
+ */
+function addFolderToZip($dir, $zipArchive, $zipdir = '') {
+	if (is_dir ( $dir )) {
+		if ($dh = opendir ( $dir )) {
+				
+			// Add the directory
+			if (! empty ( $zipdir ))
+				$zipArchive->addEmptyDir ( $zipdir );
+			echo "dir added: " . $zipdir . "<br />";
+				
+			// Loop through all the files
+			while ( ($file = readdir ( $dh )) !== false ) {
+
+				// If it's a folder, run the function again!
+				if (! is_file ( $dir . $file )) {
+					// Skip parent and root directories
+					if (($file !== ".") && ($file !== "..")) {
+						addFolderToZip ( $dir . $file . "/", $zipArchive, $zipdir . $file . "/" );
+					}
+				} else {
+					// Add the files
+					$zipArchive->addFile ( $dir . $file, $zipdir . $file );
+					echo "file added: " . $file . "<br />";
+				}
+			}
+		}
+	}
+}
+
+  /**
+   * Creates a temporary directory.
+   * 
+   * @param unknown $dir
+   * @param string $prefix
+   * @param number $mode
+   * @return string
+   */
+  function tempdir($dir, $prefix='', $mode=0777)
+  {
+    $tmpfile = tempnam($dir, 'smart1');
+    unlink($tmpfile);
+    mkdir($tmpfile);
+    
+    return $tmpfile;
+  }
+
+  /**
+   * Creates the directory structure for the notebook format.
+   * 
+   * @param string $dir
+   * @return string
+   */
+  function createDirStructure($basedir) {
+	mkdir($basedir . '/pictures');
+	//mkdir($basedir . '/flash');
+	//mkdir($basedir . '/files');
+	return $basedir;
+  }
+  
+  /**
+   * Deletes directory with all files and subdirectories in it.
+   * 
+   * @param unknown $dir
+   * @return boolean
+   */
+  function recurseRmdir($dir) {
+  	$files = array_diff(scandir($dir), array('.','..'));
+  
+  	foreach ($files as $file) {
+  		(is_dir("$dir/$file")) ? recurseRmdir("$dir/$file") : unlink("$dir/$file");
+  	}
+  
+  	return rmdir($dir);
+  }
+  
+  function save_simplexml($simplexml, $file) {
+  	$result = $simplexml->asXML($file);
+  	if(!$result) {
+  		debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
+  		// TODO: error handling
+  	}
+  }
+  
+  function load_simplexml($file) {
+  	$xml_doc = simplexml_load_file($file);
+  	if(!$xml_doc) {
+  		// TODO: error handling
+  		debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
+  	}
+  	
+  	return $xml_doc;
+  }
+  
+  function save_domdocument($domdocument, $file) {
+  	$domdocument->formatOutput = true;
+  	$result = $domdocument->save($filename);
+  	if(!$result) {
+  		debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
+  		// TODO: error handling
+  	}
+  }
+  
+  function load_domdocument($file) {
+  	$xml_doc = new DOMDocument();
+  	$result = $xml_doc->load($filename);
+  	if(!$result) {
+  		// TODO: error handling
+  		debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
+  	}
+  	return $xml_doc;
+  }
+  
+?>

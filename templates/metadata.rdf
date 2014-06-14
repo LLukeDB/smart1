@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rdf:RDF 
+	xmlns:dc="http://purl.org/dc/elements/1.1/" 
+	xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#" 
+	xmlns:senteo="http://www.smarttech.com/2008/senteo/">
+
+  <!-- page2.svg - numeric question -->
+  <rdf:Description rdf:nodeID="blank.IG65HQ5GDLEK7D2P7BBUC4A9U">
+    <senteo:maximumvalue>4</senteo:maximumvalue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="blank.IG65HQ5GDLEK7D2P7BBUC4A9U">
+    <senteo:minimumvalue>4</senteo:minimumvalue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="blank.IG65HQ5GDLEK7D2P7BBUC4A9U">
+    <senteo:points>1</senteo:points>
+  </rdf:Description>
+
+  <!-- page0.svg - multiple choice question ??-->
+  <rdf:Description rdf:nodeID="blank.QNKT5CO1NG3KF149MMLLIQH4J">
+    <senteo:choicevalue>L9BT54E8P5QKJA54QU19OU836</senteo:choicevalue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="blank.QNKT5CO1NG3KF149MMLLIQH4J">
+    <senteo:points>1</senteo:points>
+  </rdf:Description>
+
+  <!-- page1.svg - yes no question ??-->
+  <rdf:Description rdf:nodeID="blank.TKMUC4KH9FB451EV1QVBE4U0H">
+    <senteo:choicevalue>1NQRM5HEJ5MKFBS23S5I07LRM</senteo:choicevalue>
+  </rdf:Description>
+  <rdf:Description rdf:nodeID="blank.TKMUC4KH9FB451EV1QVBE4U0H">
+    <senteo:points>1</senteo:points>
+  </rdf:Description>
+
+
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.3A24JKF91314PFKTB64NAPLKQ">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#choice</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.3A24JKF91314PFKTB64NAPLKQ">
+    <senteo:choicevalue>M9E70NPLDP54N0G9T815BG3LN</senteo:choicevalue>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.3A24JKF91314PFKTB64NAPLKQ">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Annotation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.DLBES7JDC0A45FRU2QFVGM59E">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#choice</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.DLBES7JDC0A45FRU2QFVGM59E">
+    <senteo:choicevalue>LT6SKQBH7VPKHEJHK208UDRGN</senteo:choicevalue>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.DLBES7JDC0A45FRU2QFVGM59E">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Annotation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.E5C1PEVUJQGKJ06O4DHNEGB8O">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#choice</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.E5C1PEVUJQGKJ06O4DHNEGB8O">
+    <senteo:choicevalue>L9BT54E8P5QKJA54QU19OU836</senteo:choicevalue>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.E5C1PEVUJQGKJ06O4DHNEGB8O">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Annotation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.PL78C3CN7N4K531L8PFTGABHR">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#choice</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.PL78C3CN7N4K531L8PFTGABHR">
+    <senteo:choicevalue>1NQRM5HEJ5MKFBS23S5I07LRM</senteo:choicevalue>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.PL78C3CN7N4K531L8PFTGABHR">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Annotation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.S9RNBG2AMI0K5E70LBALR0NF7">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#choice</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.S9RNBG2AMI0K5E70LBALR0NF7">
+    <senteo:choicevalue>QAP99GCBIC54PA2EJ0VD4FBN3</senteo:choicevalue>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.S9RNBG2AMI0K5E70LBALR0NF7">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Annotation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.TE995PDUNHG4D0MCC5DE2N9SL">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#choice</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.TE995PDUNHG4D0MCC5DE2N9SL">
+    <senteo:choicevalue>HTJRHI22P4A4HC1DQ2MUTUFI0</senteo:choicevalue>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:annotation.TE995PDUNHG4D0MCC5DE2N9SL">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Annotation"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.8UQ64BUKK1A4J8AM2IL5ODTIL">
+    <senteo:answer rdf:nodeID="blank.QNKT5CO1NG3KF149MMLLIQH4J"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.8UQ64BUKK1A4J8AM2IL5ODTIL">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#question</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.8UQ64BUKK1A4J8AM2IL5ODTIL">
+    <senteo:choicelabelstyle>http://www.smarttech.com/2008/senteo/choicelabelstyle#yes-no</senteo:choicelabelstyle>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.8UQ64BUKK1A4J8AM2IL5ODTIL">
+    <senteo:note></senteo:note>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.8UQ64BUKK1A4J8AM2IL5ODTIL">
+    <senteo:questionformat>http://www.smarttech.com/2008/senteo/questionformat#choice</senteo:questionformat>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.8UQ64BUKK1A4J8AM2IL5ODTIL">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Page"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.CCR5MIEU9MJKL6C8T18CBOFUI">
+    <senteo:answer rdf:nodeID="blank.TKMUC4KH9FB451EV1QVBE4U0H"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.CCR5MIEU9MJKL6C8T18CBOFUI">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#question</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.CCR5MIEU9MJKL6C8T18CBOFUI">
+    <senteo:choicelabelstyle>http://www.smarttech.com/2008/senteo/choicelabelstyle#upper-alpha</senteo:choicelabelstyle>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.CCR5MIEU9MJKL6C8T18CBOFUI">
+    <senteo:note></senteo:note>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.CCR5MIEU9MJKL6C8T18CBOFUI">
+    <senteo:questionformat>http://www.smarttech.com/2008/senteo/questionformat#choice</senteo:questionformat>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.CCR5MIEU9MJKL6C8T18CBOFUI">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Page"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.UE5S5STS7D94900UHPFFBRH4G">
+    <senteo:answer rdf:nodeID="blank.IG65HQ5GDLEK7D2P7BBUC4A9U"/>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.UE5S5STS7D94900UHPFFBRH4G">
+    <senteo:assessmentrole>http://www.smarttech.com/2008/senteo/assessmentrole#question</senteo:assessmentrole>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.UE5S5STS7D94900UHPFFBRH4G">
+    <senteo:note></senteo:note>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.UE5S5STS7D94900UHPFFBRH4G">
+    <senteo:questionformat>http://www.smarttech.com/2008/senteo/questionformat#decimal</senteo:questionformat>
+  </rdf:Description>
+  <rdf:Description rdf:about="urn:com.smarttech.notebook:page.UE5S5STS7D94900UHPFFBRH4G">
+    <rdf:type rdf:resource="http://www.smarttech.com/2008/notebook/Page"/>
+  </rdf:Description>
+</rdf:RDF>
