@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<svg width="800" height="600" xml:id="page.8UQ64BUKK1A4J8AM2IL5ODTIL">
+  <title>Mrz 23-13:47</title>
+  <g class="foreground">
+    <g class="question" labelwidth="16" language_direction="1" RotationPoint="(350.000000,270.000000)" transform="rotate(0.00,293.48,45.64)" xml:id="annotation.2789O5E6UAGK71UFDUEU0LRBP" visible="1">
+      <votemetadata>
+        <questiontext format="yesorno" labelstyle="yes/no" correct="1" points="1" tags="" explanation="" mathgradingoption="" likert=""/>
+      </votemetadata>
+      <text transform="translate(30,30) rotate(0.000,7.786,15.641) scale(1.000,1.000)" RotationPoint="(320.000000,240.000000)" xml:id="annotation.LF9M178MCTQKD8F6T2KSGKNLK" visible="1" smart-txt-ver="2.10" editwidth="15.57" editheight="31.28" forcewidth="0" forceheight="0" language_direction="1" textdirection="0" theme_anno_style="0">
+        <tspan justification="left" bullet="0">
+          <tspan>
+            <tspan fill="#000000" font-weight="bold" font-size="28.000" font-family="Arial" char-transform="0.00 1.00 0.00 0.00 0.00 1.00" textLength="15.57" y="25.35" x="0.00">2</tspan>
+          </tspan>
+        </tspan>
+      </text>
+      <text transform="translate(61,30) rotate(0.000,248.192,15.641) scale(1.000,1.000)" RotationPoint="(350.572266,240.000000)" xml:id="annotation.KBQDA6HA9OCKF89OLAGJ8684D" visible="1" smart-txt-ver="2.10" editwidth="496.38" editheight="31.28" forcewidth="0" forceheight="0" language_direction="1" textdirection="0" theme_anno_style="0">
+        <tspan justification="left" bullet="0">
+          <tspan>
+            <tspan fill="#000000" font-weight="bold" font-size="28.000" font-family="Arial" char-transform="0.00 1.00 0.00 0.00 0.00 1.00" textLength="496.38" y="25.35" x="0.00">Ja oder Nein, dass ist hier die Frage?</tspan>
+          </tspan>
+        </tspan>
+      </text>
+    </g>
+    <g class="questionchoice" xbk_transform="rotate(0.00,96.21,128.92)" labelwidth="32" language_direction="1" RotationPoint="(376.000000,353.281250)" transform="rotate(0.00,96.21,128.92)" xml:id="annotation.E5C1PEVUJQGKJ06O4DHNEGB8O" visible="1">
+      <votemetadata>
+        <choicetext label="1"/>
+      </votemetadata>
+      <text transform="translate(83,113) rotate(0.000,15.572,15.641) scale(1.000,1.000)" RotationPoint="(346.500000,240.000000)" xml:id="annotation.CRODARJNKSQKDF54Q0SGHSJNT" visible="1" smart-txt-ver="2.10" editwidth="31.14" editheight="31.28" forcewidth="0" forceheight="0" language_direction="1" textdirection="0" theme_anno_style="0">
+        <tspan justification="left" bullet="0">
+          <tspan>
+            <tspan fill="#000000" font-weight="bold" font-size="28.000" font-family="Arial" char-transform="0.00 1.00 0.00 0.00 0.00 1.00" textLength="31.14" y="25.35" x="0.00">Ja</tspan>
+          </tspan>
+        </tspan>
+      </text>
+      <text transform="translate(129,113) rotate(0.000,3.890,15.641) scale(1.000,1.000)" RotationPoint="(320.000000,240.000000)" xml:id="annotation.UJKN266A2TAKL0LK1EMVI6Q5O" visible="1" smart-txt-ver="2.10" editwidth="7.78" editheight="31.28" forcewidth="0" forceheight="0" language_direction="1" textdirection="0" theme_anno_style="0">
+        <tspan justification="left" bullet="0">
+          <tspan>
+            <tspan fill="#000000" font-weight="bold" font-size="28.000" font-family="Arial" char-transform="0.00 1.00 0.00 0.00 0.00 1.00" textLength="7.78" y="25.35" x="0.00"> </tspan>
+          </tspan>
+        </tspan>
+      </text>
+      <g class="group" xml:id="annotation.R4NJHK1NS7GKH34UF0T6P6TL3" xbk_transform="rotate(0.00,66.75,124.03)">
+        <ellipse cx="68.01" cy="125.29" rx="9.49" ry="9.49" shapename="3" fill="#808080" st_id="22" stroke="#808080" stroke-width="1.00" fade-time="6" fade-enable="0" metadatatoken="annotationmetadata/metadata.xml" RotationPoint="(194.000000,264.281250)" transform="rotate(0.00,68.01,125.29)" xml:id="annotation.ASDP3IR03RV4J0FGMFIPTME9L" visible="1"/>
+        <ellipse cx="65.49" cy="122.77" rx="9.49" ry="9.49" shapename="3" fill="#ffffff" st_id="23" stroke="#000000" stroke-width="1.00" fade-time="6" fade-enable="0" metadatatoken="annotationmetadata/metadata.xml" RotationPoint="(194.000000,264.281250)" transform="rotate(0.00,65.49,122.77)" xml:id="annotation.L4B0M9Q69OBKF05NH3EJ72R58" visible="1"/>
+      </g>
+    </g>
+    <g class="questionchoice" xbk_transform="rotate(0.00,110.98,194.20)" labelwidth="61" language_direction="1" RotationPoint="(376.000000,418.562500)" transform="rotate(0.00,110.98,194.20)" xml:id="annotation.DLBES7JDC0A45FRU2QFVGM59E" visible="1">
+      <votemetadata>
+        <choicetext label="2"/>
+      </votemetadata>
+      <text transform="translate(83,179) rotate(0.000,30.338,15.641) scale(1.000,1.000)" RotationPoint="(346.500000,240.000000)" xml:id="annotation.6LHIBDBI1KJKB7KRBH0MRETLS" visible="1" smart-txt-ver="2.10" editwidth="60.68" editheight="31.28" forcewidth="0" forceheight="0" language_direction="1" textdirection="0" theme_anno_style="0">
+        <tspan justification="left" bullet="0">
+          <tspan>
+            <tspan fill="#000000" font-weight="bold" font-size="28.000" font-family="Arial" char-transform="0.00 1.00 0.00 0.00 0.00 1.00" textLength="60.68" y="25.35" x="0.00">Nein</tspan>
+          </tspan>
+        </tspan>
+      </text>
+      <text transform="translate(158,179) rotate(0.000,3.890,15.641) scale(1.000,1.000)" RotationPoint="(320.000000,240.000000)" xml:id="annotation.UBFJ4O8SFA44N1CK2CNJELVCD" visible="1" smart-txt-ver="2.10" editwidth="7.78" editheight="31.28" forcewidth="0" forceheight="0" language_direction="1" textdirection="0" theme_anno_style="0">
+        <tspan justification="left" bullet="0">
+          <tspan>
+            <tspan fill="#000000" font-weight="bold" font-size="28.000" font-family="Arial" char-transform="0.00 1.00 0.00 0.00 0.00 1.00" textLength="7.78" y="25.35" x="0.00"> </tspan>
+          </tspan>
+        </tspan>
+      </text>
+      <g class="group" xml:id="annotation.N0E1TU0IST54REM4E6S5OCUTS" xbk_transform="rotate(0.00,66.75,189.31)">
+        <ellipse cx="68.01" cy="190.57" rx="9.49" ry="9.49" shapename="3" fill="#808080" st_id="27" stroke="#808080" stroke-width="1.00" fade-time="6" fade-enable="0" metadatatoken="annotationmetadata/metadata.xml" RotationPoint="(194.000000,329.562500)" transform="rotate(0.00,68.01,190.57)" xml:id="annotation.SMCGH92OHNJKHCHCHQOVI85HQ" visible="1"/>
+        <ellipse cx="65.49" cy="188.05" rx="9.49" ry="9.49" shapename="3" fill="#ffffff" st_id="28" stroke="#000000" stroke-width="1.00" fade-time="6" fade-enable="0" metadatatoken="annotationmetadata/metadata.xml" RotationPoint="(194.000000,329.562500)" transform="rotate(0.00,65.49,188.05)" xml:id="annotation.NHGA7EQD3J4KL435DDPTBGKPB" visible="1"/>
+      </g>
+    </g>
+  </g>
+</svg>

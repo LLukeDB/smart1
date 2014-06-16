@@ -104,26 +104,25 @@ function addFolderToZip($dir, $zipArchive, $zipdir = '') {
   function save_simplexml($simplexml, $file) {
   	$result = $simplexml->asXML($file);
   	if(!$result) {
-  		debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
   		// TODO: error handling
   	}
   }
   
   function load_simplexml($file) {
-  	$xml_doc = simplexml_load_file($file);
-  	if(!$xml_doc) {
+  	if (file_exists($file)) {
+	  	$xml_doc = simplexml_load_file($file);
+		return $xml_doc;
+  	}
+  	else {
   		// TODO: error handling
-  		debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
   	}
   	
-  	return $xml_doc;
   }
   
   function save_domdocument($domdocument, $file) {
   	$domdocument->formatOutput = true;
   	$result = $domdocument->save($filename);
   	if(!$result) {
-  		debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
   		// TODO: error handling
   	}
   }
@@ -133,7 +132,6 @@ function addFolderToZip($dir, $zipArchive, $zipdir = '') {
   	$result = $xml_doc->load($filename);
   	if(!$result) {
   		// TODO: error handling
-  		debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
   	}
   	return $xml_doc;
   }

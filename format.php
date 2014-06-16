@@ -1,5 +1,4 @@
 <?php
-
 // This file is part of Moodle - http://moodle.org/
 //
 // Moodle is free software: you can redistribute it and/or modify
@@ -28,15 +27,16 @@ require_once ("$CFG->libdir/xmlize.php");
 require_once ($CFG->dirroot . '/lib/uploadlib.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 require_once ($CFG->dirroot . '/question/format/smart1/export.php');
-
-// extends qformat_default
 require_once ("$CFG->dirroot/question/format.php");
+require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
+
 class qformat_smart1 extends qformat_default {
-	private $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot
-	private $settings_template = "templates/settings.xml";
+	private $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.
+	private $settings_template    = "templates/settings.xml";
 	private $imsmanifest_template = "templates/imsmanifest.xml";
 	private $metadataxml_template = "templates/metadata.xml";
 	private $metadatardf_template = "templates/metadata.rdf";
+	private $page_template        = "templates/page.svg";
 	
 	/**
 	 * @return bool whether this plugin provides export functionality.
@@ -174,17 +174,18 @@ class qformat_smart1 extends qformat_default {
 		$exporter_factory = new qformat_exporter_factory();
 		$export_data = $this->init_export_data();
 		
-		// export all questions
+		// Export all questions.
 		foreach ( $questions as $question ) {
+			error_logger::get_instance()->log_error("exporting question \"" . $question->name . "\"");
 			$exporter = $exporter_factory->get_exporter($question);
 			
 			if(!$exporter) {
-				debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
+				error_logger::get_instance()->log_error("creation of exporter for question \"" . $question->name . "\" failed!");
 				// continue path for following error checks
 				$course = $this->course;
 				$continuepath = "$CFG->wwwroot/question/export.php?courseid=$course->id";
-				// TODO: print correct error message
-				print_error ( 'unsupported questiontype', 'question', $continuepath );
+				// TODO Print correct error message.
+				print_error('unsupported questiontype', 'question', $continuepath);
 			}
 			else {
 				$exporter->export($export_data);				
@@ -192,11 +193,14 @@ class qformat_smart1 extends qformat_default {
 			
 		}
 		
-		// export logged errors
-		// TODO: create dummy-question for 'log'
-		$exporter = $exporter_factory->get_exporter('log');
+		// Export logged errors.
+		error_logger::get_instance()->log_error("exporting question error_log");
+		$dummy_question=new stdClass();
+		$dummy_question->qtype='log';
+		$exporter = $exporter_factory->get_exporter($dummy_question);
 		$exporter->export($export_data);
 		
+		// Create zip-file from export_data and start downlaod.
 		$zip_file = $this->create_zip_from_export_data($export_data);
 		$this->start_download($zip_file);
 		unlink($zip_file);
@@ -240,13 +244,25 @@ class qformat_smart1 extends qformat_default {
 		global $CFG;
 		$export_data = new export_data();
 		
-		// load settings.xml-template
+		// Load settings.xml-template.
 		$filename = $CFG->dirroot . $this->plugin_dir . $this->settings_template;
 		$export_data->settings = load_simplexml($filename);
 		
-		// load metadata.xml-template
+		// Load metadata.xml-template.
 		$filename = $CFG->dirroot . $this->plugin_dir . $this->metadataxml_template;
-			$export_data->metadataxml = load_simplexml($filename);
+		$export_data->metadataxml = load_simplexml($filename);
+		
+		// Load metadata.rdf-template.
+		$filename = $CFG->dirroot . $this->plugin_dir . $this->metadatardf_template;
+		$export_data->metadatardf = load_simplexml($filename);
+		
+		// Load imsmanifest.xml-template.
+		$filename = $CFG->dirroot . $this->plugin_dir . $this->imsmanifest_template;
+		$export_data->imsmanifest = load_simplexml($filename);
+		
+		// Load page.svg-template.
+		$filename = $CFG->dirroot . $this->plugin_dir . $this->page_template;
+		$export_data->page_template = load_simplexml($filename);
 		
 		return $export_data;
 	}
@@ -254,25 +270,43 @@ class qformat_smart1 extends qformat_default {
 	private function create_zip_from_export_data($export_data) {
 		global $CFG;
 		
-		// create temporary directory for data
+		// Create temporary directory for data.
 		$moodletmpdir = $CFG->dataroot . "/temp/";
 		$tmpdir = tempdir($moodletmpdir, "smart");
 		createDirStructure($tmpdir);
 		
-		// write settings.xml to temporary directory
+		// Write settings.xml to temporary directory.
 		$filename = $tmpdir . "/settings.xml";
 		$xml_doc = $export_data->settings;
 		save_simplexml($xml_doc, $filename);
 		
-		// write metadata.xml to temporary directory
+		// Write metadata.xml to temporary directory.
 		$filename = $tmpdir . "/metadata.xml";
 		$xml_doc = $export_data->metadataxml;
 		save_simplexml($xml_doc, $filename);
+
+		// Write metadata.rdf to temporary directory.
+		$filename = $tmpdir . "/metadata.rdf";
+		$xml_doc = $export_data->metadatardf;
+		save_simplexml($xml_doc, $filename);
 		
-		// create zip file from temporary directory		
+		// Write imsmanifest.xml to temporary directory.
+		$filename = $tmpdir . "/imsmanifest.xml";
+		$xml_doc = $export_data->imsmanifest;
+		save_simplexml($xml_doc, $filename);
+		
+		// Write pages to temporary directory.
+		$pages = $export_data->pages;
+		for ($i = 0; $i < count($pages); $i++) {
+			$filename = $tmpdir . "/page" . $i . ".svg";
+			$xml_doc = $pages[$i];
+			save_simplexml($xml_doc, $filename);
+		}
+		
+		// Create zip file from temporary directory.		
 		$tmpfile = tempnam($moodletmpdir, 'smart');
 		create_zip($tmpdir, $tmpfile);
-		//recurseRmdir($tmpdir);
+		//recurseRmdir($tmpdir);	// Commented out for development.
 		
 		return $tmpfile;
 	}
