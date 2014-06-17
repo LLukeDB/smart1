@@ -201,12 +201,15 @@ class qformat_smart1 extends qformat_default {
 		$exporter->export($export_data);
 		
 		// Create zip-file from export_data and start downlaod.
+		$zip_file = "asdf";
 		$zip_file = $this->create_zip_from_export_data($export_data);
-		$this->start_download($zip_file);
-		unlink($zip_file);
-	
-		//return $zip_file;
-		return false;
+// 		$this->start_download($zip_file);
+// 		unlink($zip_file);
+
+		$filehandle = fopen($zip_file, "r");
+		$filecontent = fread($filehandle, filesize($zip_file));
+		fclose($filehandle);		
+		return $filecontent;
 	}
 	
 	/**
@@ -272,39 +275,39 @@ class qformat_smart1 extends qformat_default {
 		
 		// Create temporary directory for data.
 		$moodletmpdir = $CFG->dataroot . "/temp/";
-		$tmpdir = tempdir($moodletmpdir, "smart");
+		$tmpdir = tempdir($moodletmpdir, "smart_");
 		createDirStructure($tmpdir);
 		
 		// Write settings.xml to temporary directory.
-		$filename = $tmpdir . "/settings.xml";
+		$filename = $tmpdir . "settings.xml";
 		$xml_doc = $export_data->settings;
 		save_simplexml($xml_doc, $filename);
 		
 		// Write metadata.xml to temporary directory.
-		$filename = $tmpdir . "/metadata.xml";
+		$filename = $tmpdir . "metadata.xml";
 		$xml_doc = $export_data->metadataxml;
 		save_simplexml($xml_doc, $filename);
 
 		// Write metadata.rdf to temporary directory.
-		$filename = $tmpdir . "/metadata.rdf";
+		$filename = $tmpdir . "metadata.rdf";
 		$xml_doc = $export_data->metadatardf;
 		save_simplexml($xml_doc, $filename);
 		
 		// Write imsmanifest.xml to temporary directory.
-		$filename = $tmpdir . "/imsmanifest.xml";
+		$filename = $tmpdir . "imsmanifest.xml";
 		$xml_doc = $export_data->imsmanifest;
 		save_simplexml($xml_doc, $filename);
 		
 		// Write pages to temporary directory.
 		$pages = $export_data->pages;
 		for ($i = 0; $i < count($pages); $i++) {
-			$filename = $tmpdir . "/page" . $i . ".svg";
+			$filename = $tmpdir . "page" . $i . ".svg";
 			$xml_doc = $pages[$i];
 			save_simplexml($xml_doc, $filename);
 		}
 		
 		// Create zip file from temporary directory.		
-		$tmpfile = tempnam($moodletmpdir, 'smart');
+		$tmpfile = tempnam($moodletmpdir, 'smart_');
 		create_zip($tmpdir, $tmpfile);
 		//recurseRmdir($tmpdir);	// Commented out for development.
 		
