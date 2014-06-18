@@ -200,12 +200,13 @@ class qformat_smart1 extends qformat_default {
 		$exporter = $exporter_factory->get_exporter($dummy_question);
 		$exporter->export($export_data);
 		
-		// Create zip-file from export_data and start downlaod.
+		// Create zip-file from export_data.
 		$zip_file = "asdf";
 		$zip_file = $this->create_zip_from_export_data($export_data);
 // 		$this->start_download($zip_file);
 // 		unlink($zip_file);
 
+		// Return the zip file.
 		$filehandle = fopen($zip_file, "r");
 		$filecontent = fread($filehandle, filesize($zip_file));
 		fclose($filehandle);		
@@ -314,27 +315,27 @@ class qformat_smart1 extends qformat_default {
 		return $tmpfile;
 	}
 	
-	private function start_download($zipfile) {
-		$filehandle = fopen($zipfile, "r");
-		$filecontent = fread($filehandle, filesize($zipfile));
-		fclose($filehandle);
+// 	private function start_download($zipfile) {
+// 		$filehandle = fopen($zipfile, "r");
+// 		$filecontent = fread($filehandle, filesize($zipfile));
+// 		fclose($filehandle);
 		
-		$name = "xyz 123.zip";
-		$type = "APPLICATION";
-		$subtype = "ZIP";
-		$encoding = "BASE64";
+// 		$name = "xyz 123.zip";
+// 		$type = "APPLICATION";
+// 		$subtype = "ZIP";
+// 		$encoding = "BASE64";
 		
-		header('Content-Description: File Transfer');
-		header('Content-Type: '. $type .'/'. $subtype);
-		header('Content-Disposition: attachment; filename='.$name);
-		header('Content-Transfer-Encoding: '.$encoding);
-		header('Expires: 0');
-		header('Cache-Control: must-revalidate');
-		header('Pragma: public');
-		ob_clean();
-		flush();
-		echo $filecontent;
-	}
+// 		header('Content-Description: File Transfer');
+// 		header('Content-Type: '. $type .'/'. $subtype);
+// 		header('Content-Disposition: attachment; filename='.$name);
+// 		header('Content-Transfer-Encoding: '.$encoding);
+// 		header('Expires: 0');
+// 		header('Cache-Control: must-revalidate');
+// 		header('Pragma: public');
+// 		ob_clean();
+// 		flush();
+// 		echo $filecontent;
+// 	}
 }
 ?>
 
