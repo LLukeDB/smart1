@@ -101,7 +101,9 @@ function addFolderToZip($dir, $zipArchive, $zipdir = '') {
   	$result = $simplexml->asXML($file);
   	if(!$result) {
   		// TODO: error handling
+  		return false;
   	}
+  	return true;
   }
   
   function load_simplexml($file) {

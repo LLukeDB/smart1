@@ -29,14 +29,18 @@ require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 require_once ($CFG->dirroot . '/question/format/smart1/export.php');
 require_once ("$CFG->dirroot/question/format.php");
 require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
+require_once ($CFG->dirroot . '/question/format/smart1/wrapper.php');
 
 class qformat_smart1 extends qformat_default {
-	private $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.
+	private static $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.
 	private $settings_template    = "templates/settings.xml";
 	private $imsmanifest_template = "templates/imsmanifest.xml";
-	private $metadataxml_template = "templates/metadata.xml";
 	private $metadatardf_template = "templates/metadata.rdf";
 	private $page_template        = "templates/page.svg";
+	
+	public static function get_plugin_dir() {
+		return qformat_smart1::$plugin_dir;
+	}
 	
 	/**
 	 * @return bool whether this plugin provides export functionality.
@@ -249,23 +253,22 @@ class qformat_smart1 extends qformat_default {
 		$export_data = new export_data();
 		
 		// Load settings.xml-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->settings_template;
+		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->settings_template;
 		$export_data->settings = load_simplexml($filename);
 		
-		// Load metadata.xml-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->metadataxml_template;
-		$export_data->metadataxml = load_simplexml($filename);
+		// Init metadataxml_wrapper.
+		$export_data->metadataxml_wrapper = new metadataxml_wrapper();
 		
 		// Load metadata.rdf-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->metadatardf_template;
+		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->metadatardf_template;
 		$export_data->metadatardf = load_simplexml($filename);
 		
 		// Load imsmanifest.xml-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->imsmanifest_template;
+		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->imsmanifest_template;
 		$export_data->imsmanifest = load_simplexml($filename);
 		
 		// Load page.svg-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->page_template;
+		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->page_template;
 		$export_data->page_template = load_simplexml($filename);
 		
 		return $export_data;
@@ -285,9 +288,7 @@ class qformat_smart1 extends qformat_default {
 		save_simplexml($xml_doc, $filename);
 		
 		// Write metadata.xml to temporary directory.
-		$filename = $tmpdir . "metadata.xml";
-		$xml_doc = $export_data->metadataxml;
-		save_simplexml($xml_doc, $filename);
+		$export_data->metadataxml_wrapper->save($tmpdir);
 
 		// Write metadata.rdf to temporary directory.
 		$filename = $tmpdir . "metadata.rdf";

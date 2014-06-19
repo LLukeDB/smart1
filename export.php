@@ -11,6 +11,7 @@ class export_data {
 	public $pages = array();
 	public $page_template;
 	
+	public $metadataxml_wrapper;
 }
 
 class qformat_exporter_factory {
@@ -22,7 +23,7 @@ class qformat_exporter_factory {
 			case 'truefalse':
 				return new truefalse_exporter($question);
 			case 'log':
-				return new log_exporter();
+				return new log_exporter($question);
 			default:
 				return false;
 		}
@@ -111,13 +112,6 @@ class log_exporter extends qformat_exporter {
 		error_logger::get_instance()->log_error("log_exporter created");
 	}
 	
-	public function export($export_data) {
-		error_logger::get_instance()->log_error("log_exporter->export() called");
-		$this->write_metadataxml($export_data);
-		
-		$this->export_to_file();
-	}
-	
 	/*
 	 * Helper function, which exports the log to a file for debugging.
 	 */
@@ -134,15 +128,7 @@ class log_exporter extends qformat_exporter {
 		}
 		fclose($handle);
 	}
-		
-	protected function write_metadataxml($export_data) {
-		error_logger::get_instance()->log_error("log_exporter->write_metadataxml() called");
-		
-		// write current date to metadata.xml
-		error_log('log_exporter->write_metadataxml');
-		$date = date("Y-m-d\TH:i:s");
-		$export_data->metadataxml->children('lom', true)->lifeCycle->children('smartgallery', true)->creationdatetime = $date;
-	}
+	
 }
 
 
