@@ -4,14 +4,13 @@ require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
 
 class export_data {
 	
-	public $imsmanifest;
-	public $metadataxml;
 	public $metadatardf;
-	public $settings;
 	public $pages = array();
 	public $page_template;
 	
 	public $metadataxml_wrapper;
+	public $settingsxml_wrapper;
+	public $imsmanifest_wrapper;
 }
 
 class qformat_exporter_factory {
@@ -54,16 +53,6 @@ abstract class qformat_exporter {
 	protected function write_page($export_data) {
 		return;
 	}
-	
-	protected function add_page_to_imsmanifest($page_name, $export_data) {
-		$imsmanifest = $export_data->imsmanifest;
-	
-		$page = $imsmanifest->resources->resource[0]->addChild("file");
-		$page->addAttribute("href", $page_name);
-	
-		$page = $imsmanifest->resources->resource[1]->addChild("file");
-		$page->addAttribute("href", $page_name);
-	}
 		
 }
 
@@ -87,9 +76,9 @@ class truefalse_exporter extends qformat_exporter {
 		$page_name = "page" . $page_num . ".svg";
 		// TODO copy template and fill it.
 		array_push($export_data->pages, $page);
-		$this->add_page_to_imsmanifest($page_name, $export_data);
-	}
-	
+		
+		$export_data->imsmanifest_wrapper->add_page($page_name);
+	}	
 }
 
 /**

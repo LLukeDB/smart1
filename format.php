@@ -30,6 +30,8 @@ require_once ($CFG->dirroot . '/question/format/smart1/exporter/export.php');
 require_once ("$CFG->dirroot/question/format.php");
 require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
 require_once ($CFG->dirroot . '/question/format/smart1/wrapper/metadataxml_wrapper.php');
+require_once ($CFG->dirroot . '/question/format/smart1/wrapper/settingsxml_wrapper.php');
+require_once ($CFG->dirroot . '/question/format/smart1/wrapper/imsmanifest_wrapper.php');
 
 class qformat_smart1 extends qformat_default {
 	private static $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.
@@ -252,9 +254,8 @@ class qformat_smart1 extends qformat_default {
 		global $CFG;
 		$export_data = new export_data();
 		
-		// Load settings.xml-template.
-		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->settings_template;
-		$export_data->settings = load_simplexml($filename);
+		// Init settingsxml_wrapper.
+		$export_data->settingsxml_wrapper = new settingsxml_wrapper();
 		
 		// Init metadataxml_wrapper.
 		$export_data->metadataxml_wrapper = new metadataxml_wrapper();
@@ -263,9 +264,8 @@ class qformat_smart1 extends qformat_default {
 		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->metadatardf_template;
 		$export_data->metadatardf = load_simplexml($filename);
 		
-		// Load imsmanifest.xml-template.
-		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->imsmanifest_template;
-		$export_data->imsmanifest = load_simplexml($filename);
+		// Init imsmanifest_wrapper.
+		$export_data->imsmanifest_wrapper = new imsmanifest_wrapper();
 		
 		// Load page.svg-template.
 		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->page_template;
@@ -283,21 +283,17 @@ class qformat_smart1 extends qformat_default {
 		createDirStructure($tmpdir);
 		
 		// Write settings.xml to temporary directory.
-		$filename = $tmpdir . "settings.xml";
-		$xml_doc = $export_data->settings;
-		save_simplexml($xml_doc, $filename);
+		$export_data->settingsxml_wrapper->save($tmpdir);
 		
 		// Write metadata.xml to temporary directory.
 		$export_data->metadataxml_wrapper->save($tmpdir);
 
+		// Write imsmanifest.xml to temporary directory.
+		$export_data->imsmanifest_wrapper->save($tmpdir);
+
 		// Write metadata.rdf to temporary directory.
 		$filename = $tmpdir . "metadata.rdf";
 		$xml_doc = $export_data->metadatardf;
-		save_simplexml($xml_doc, $filename);
-		
-		// Write imsmanifest.xml to temporary directory.
-		$filename = $tmpdir . "imsmanifest.xml";
-		$xml_doc = $export_data->imsmanifest;
 		save_simplexml($xml_doc, $filename);
 		
 		// Write pages to temporary directory.
