@@ -2,16 +2,48 @@
 
 require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
 require_once ($CFG->dirroot . '/question/format/smart1/wrapper/page_wrapper.php');
+require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 
 class export_data {
 	
-	public $pages = array();
-	public $page_template;
-	
+	public $pages;
 	public $metadataxml_wrapper;
 	public $settingsxml_wrapper;
 	public $imsmanifest_wrapper;
 	public $metadatardf_wrapper;
+	
+	public function __construct() {
+		$this->pages = array();
+		$this->settingsxml_wrapper = new settingsxml_wrapper();
+		$this->metadataxml_wrapper = new metadataxml_wrapper();
+		$this->metadatardf_wrapper = new metadatardf_wrapper();
+		$this->imsmanifest_wrapper = new imsmanifest_wrapper();
+	}
+	
+	public function toZIP() {
+		global $CFG;
+	
+		// Create temporary directory for data.
+		$moodletmpdir = $CFG->dataroot . "/temp/";
+		$tmpdir = tempdir($moodletmpdir, "smart_");
+		createDirStructure($tmpdir);
+	
+		// Write data to temporary directory.
+		$this->settingsxml_wrapper->save($tmpdir);
+		$this->metadataxml_wrapper->save($tmpdir);
+		$this->imsmanifest_wrapper->save($tmpdir);
+		$this->metadatardf_wrapper->save($tmpdir);
+		foreach ($this->pages as $page) {
+			$page->save($tmpdir);
+		}
+	
+		// Create zip file from temporary directory.
+		$tmpfile = tempnam($moodletmpdir, 'smart_');
+		create_zip($tmpdir, $tmpfile);
+		//recurseRmdir($tmpdir);	// Commented out for development.
+	
+		return $tmpfile;
+	}
 }
 
 class qformat_exporter_factory {

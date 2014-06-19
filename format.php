@@ -174,9 +174,8 @@ class qformat_smart1 extends qformat_default {
 		// $expout = $this->presave_process ( $expout );
 		
 		
-		
 		$exporter_factory = new qformat_exporter_factory();
-		$export_data = $this->init_export_data();
+		$export_data = new export_data();
 		
 		// Export all questions.
 		foreach ( $questions as $question ) {
@@ -194,7 +193,6 @@ class qformat_smart1 extends qformat_default {
 			else {
 				$exporter->export($export_data);				
 			}			
-			
 		}
 		
 		// Export logged errors.
@@ -205,15 +203,14 @@ class qformat_smart1 extends qformat_default {
 		$exporter->export($export_data);
 		
 		// Create zip-file from export_data.
-		$zip_file = "asdf";
-		$zip_file = $this->create_zip_from_export_data($export_data);
+		$zip_file = $export_data->toZIP();
 // 		$this->start_download($zip_file);
-// 		unlink($zip_file);
 
 		// Return the zip file.
 		$filehandle = fopen($zip_file, "r");
 		$filecontent = fread($filehandle, filesize($zip_file));
-		fclose($filehandle);		
+		fclose($filehandle);
+		unlink($zip_file);
 		return $filecontent;
 	}
 	
@@ -224,80 +221,6 @@ class qformat_smart1 extends qformat_default {
 	 */
 	protected function exportpostprocess() {
 		return true;
-	}
-	
-	/**
-	 * convert a single question object into text output in the given
-	 * format.
-	 * This must be overriden
-	 *
-	 * @param
-	 *        	object question question object
-	 * @return mixed question export text or null if not implemented
-	 */
-	protected function writequestion($question) {
-		global $OUTPUT, $CFG;
-		// if not overidden, then this is an error.
-		// $formatnotimplemented = get_string ( 'formatnotimplemented', 'question' );
-		// echo "<p>$formatnotimplemented</p>";
-		// echo get_string('test_output', 'qformat_smart1');
-		echo "dataroot: " . $CFG->dataroot;
-		echo $OUTPUT->notification ( get_string ( 'test_output', 'qformat_smart1' ) );
-		echo $OUTPUT->notification ( "test output notification" );
-		// debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
-		return null;
-	}
-	
-	private function init_export_data() {
-		$export_data = new export_data();
-		
-		// Init settingsxml_wrapper.
-		$export_data->settingsxml_wrapper = new settingsxml_wrapper();
-		
-		// Init metadataxml_wrapper.
-		$export_data->metadataxml_wrapper = new metadataxml_wrapper();
-		
-		// Load metadata.rdf-template.
-		$export_data->metadatardf_wrapper = new metadatardf_wrapper();
-		
-		// Init imsmanifest_wrapper.
-		$export_data->imsmanifest_wrapper = new imsmanifest_wrapper();
-		
-		return $export_data;
-	}
-	
-	private function create_zip_from_export_data($export_data) {
-		global $CFG;
-		
-		// Create temporary directory for data.
-		$moodletmpdir = $CFG->dataroot . "/temp/";
-		$tmpdir = tempdir($moodletmpdir, "smart_");
-		createDirStructure($tmpdir);
-		
-		// Write settings.xml to temporary directory.
-		$export_data->settingsxml_wrapper->save($tmpdir);
-		
-		// Write metadata.xml to temporary directory.
-		$export_data->metadataxml_wrapper->save($tmpdir);
-
-		// Write imsmanifest.xml to temporary directory.
-		$export_data->imsmanifest_wrapper->save($tmpdir);
-
-		// Write metadata.rdf to temporary directory.
-		$export_data->metadatardf_wrapper->save($tmpdir);
-		
-		// Write pages to temporary directory.
-		$pages = $export_data->pages;
-		foreach ($pages as $page) {
-			$page->save($tmpdir);
-		}
-		
-		// Create zip file from temporary directory.		
-		$tmpfile = tempnam($moodletmpdir, 'smart_');
-		create_zip($tmpdir, $tmpfile);
-		//recurseRmdir($tmpdir);	// Commented out for development.
-		
-		return $tmpfile;
 	}
 	
 // 	private function start_download($zipfile) {
