@@ -5,7 +5,7 @@ require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 
 class metadataxml_wrapper {
 	
-	private static $metadataxml_template = "templates/metadata.xml";
+	private static $metadataxml_template = "wrapper/templates/metadata.xml";
 	
 	private $xml;
 	

@@ -26,17 +26,17 @@
 require_once ("$CFG->libdir/xmlize.php");
 require_once ($CFG->dirroot . '/lib/uploadlib.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
-require_once ($CFG->dirroot . '/question/format/smart1/export.php');
+require_once ($CFG->dirroot . '/question/format/smart1/exporter/export.php');
 require_once ("$CFG->dirroot/question/format.php");
 require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
-require_once ($CFG->dirroot . '/question/format/smart1/wrapper.php');
+require_once ($CFG->dirroot . '/question/format/smart1/wrapper/metadataxml_wrapper.php');
 
 class qformat_smart1 extends qformat_default {
 	private static $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.
-	private $settings_template    = "templates/settings.xml";
-	private $imsmanifest_template = "templates/imsmanifest.xml";
-	private $metadatardf_template = "templates/metadata.rdf";
-	private $page_template        = "templates/page.svg";
+	private $settings_template    = "wrapper/templates/settings.xml";
+	private $imsmanifest_template = "wrapper/templates/imsmanifest.xml";
+	private $metadatardf_template = "wrapper/templates/metadata.rdf";
+	private $page_template        = "wrapper/templates/page.svg";
 	
 	public static function get_plugin_dir() {
 		return qformat_smart1::$plugin_dir;
