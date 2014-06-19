@@ -1,16 +1,17 @@
 <?php
 
 require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
+require_once ($CFG->dirroot . '/question/format/smart1/wrapper/page_wrapper.php');
 
 class export_data {
 	
-	public $metadatardf;
 	public $pages = array();
 	public $page_template;
 	
 	public $metadataxml_wrapper;
 	public $settingsxml_wrapper;
 	public $imsmanifest_wrapper;
+	public $metadatardf_wrapper;
 }
 
 class qformat_exporter_factory {
@@ -71,12 +72,14 @@ class truefalse_exporter extends qformat_exporter {
 	protected function write_page($export_data) {
 		error_logger::get_instance()->log_error("truefalse_exporter->write_page() called");
 
-		$page = $export_data->page_template;
 		$page_num = count($export_data->pages);
 		$page_name = "page" . $page_num . ".svg";
-		// TODO copy template and fill it.
-		array_push($export_data->pages, $page);
+		$page_id = "ABCD";
 		
+		$page_wrapper = new page_wrapper($page_name, $page_id);
+		// TODO Fill page.
+		
+		array_push($export_data->pages, $page_wrapper);
 		$export_data->imsmanifest_wrapper->add_page($page_name);
 	}	
 }

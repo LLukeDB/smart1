@@ -32,13 +32,11 @@ require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
 require_once ($CFG->dirroot . '/question/format/smart1/wrapper/metadataxml_wrapper.php');
 require_once ($CFG->dirroot . '/question/format/smart1/wrapper/settingsxml_wrapper.php');
 require_once ($CFG->dirroot . '/question/format/smart1/wrapper/imsmanifest_wrapper.php');
+require_once ($CFG->dirroot . '/question/format/smart1/wrapper/metadatardf_wrapper.php');
+require_once ($CFG->dirroot . '/question/format/smart1/wrapper/page_wrapper.php');
 
 class qformat_smart1 extends qformat_default {
 	private static $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.
-	private $settings_template    = "wrapper/templates/settings.xml";
-	private $imsmanifest_template = "wrapper/templates/imsmanifest.xml";
-	private $metadatardf_template = "wrapper/templates/metadata.rdf";
-	private $page_template        = "wrapper/templates/page.svg";
 	
 	public static function get_plugin_dir() {
 		return qformat_smart1::$plugin_dir;
@@ -251,7 +249,6 @@ class qformat_smart1 extends qformat_default {
 	}
 	
 	private function init_export_data() {
-		global $CFG;
 		$export_data = new export_data();
 		
 		// Init settingsxml_wrapper.
@@ -261,15 +258,10 @@ class qformat_smart1 extends qformat_default {
 		$export_data->metadataxml_wrapper = new metadataxml_wrapper();
 		
 		// Load metadata.rdf-template.
-		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->metadatardf_template;
-		$export_data->metadatardf = load_simplexml($filename);
+		$export_data->metadatardf_wrapper = new metadatardf_wrapper();
 		
 		// Init imsmanifest_wrapper.
 		$export_data->imsmanifest_wrapper = new imsmanifest_wrapper();
-		
-		// Load page.svg-template.
-		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . $this->page_template;
-		$export_data->page_template = load_simplexml($filename);
 		
 		return $export_data;
 	}
@@ -292,16 +284,12 @@ class qformat_smart1 extends qformat_default {
 		$export_data->imsmanifest_wrapper->save($tmpdir);
 
 		// Write metadata.rdf to temporary directory.
-		$filename = $tmpdir . "metadata.rdf";
-		$xml_doc = $export_data->metadatardf;
-		save_simplexml($xml_doc, $filename);
+		$export_data->metadatardf_wrapper->save($tmpdir);
 		
 		// Write pages to temporary directory.
 		$pages = $export_data->pages;
-		for ($i = 0; $i < count($pages); $i++) {
-			$filename = $tmpdir . "page" . $i . ".svg";
-			$xml_doc = $pages[$i];
-			save_simplexml($xml_doc, $filename);
+		foreach ($pages as $page) {
+			$page->save($tmpdir);
 		}
 		
 		// Create zip file from temporary directory.		
