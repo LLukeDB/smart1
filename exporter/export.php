@@ -3,10 +3,12 @@
 require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
 require_once ($CFG->dirroot . '/question/format/smart1/wrapper/page_wrapper.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
+require_once ($CFG->dirroot . '/question/format/smart1/wrapper/question.php');
+require_once ($CFG->dirroot . '/question/format/smart1/idgenerator.php');
 
 class export_data {
 	
-	public $pages;
+	public $pages;		//page_wrappers
 	public $metadataxml_wrapper;
 	public $settingsxml_wrapper;
 	public $imsmanifest_wrapper;
@@ -18,6 +20,10 @@ class export_data {
 		$this->metadataxml_wrapper = new metadataxml_wrapper();
 		$this->metadatardf_wrapper = new metadatardf_wrapper();
 		$this->imsmanifest_wrapper = new imsmanifest_wrapper();
+	}
+	
+	public function add_page($page) {
+		array_push($this->pages, $page);
 	}
 	
 	public function toZIP() {
@@ -94,26 +100,44 @@ abstract class qformat_exporter {
  */
 class truefalse_exporter extends qformat_exporter {
 
-	private $question;
+	private $mquestion;
 	
 	public function __construct($question) {
-		$this->question = $question;
-		error_logger::get_instance()->log_error("truefalse_exporter created");
+		$this->mquestion = $question;
 	}
 	
-	protected function write_page($export_data) {
-		error_logger::get_instance()->log_error("truefalse_exporter->write_page() called");
-
+	public function export($export_data) {
 		$page_num = count($export_data->pages);
-		$page_name = "page" . $page_num . ".svg";
-		$page_id = "ABCD";
 		
-		$page_wrapper = new page_wrapper($page_name, $page_id);
-		// TODO Fill page.
+		$question = new question($page_num);
 		
-		array_push($export_data->pages, $page_wrapper);
-		$export_data->imsmanifest_wrapper->add_page($page_name);
-	}	
+		$question->format = "trueorfalse";
+		$question->labelstyle = "true/false";
+		$question->points = $this->mquestion->defaultmark;
+		$question->correct = $this->mquestion->options->trueanswer == '292' ? 1 : 2;
+		$question->questiontext = $this->mquestion->questiontext;
+		$question->question_num = $page_num + 1;
+		$question->questionformat = "choice";
+		$question->choicelabelstyle = "true-false";
+		
+		$choice_true = new choice();
+		$choice_true->id = "EFGH";
+		$choice_true->label = "1";
+		$choice_true->choicetext = "Wahr";
+		$choice_true->true = $this->mquestion->options->trueanswer == '292' ? true : false;
+		$question->add_choice($choice_true);
+		
+		$choice_false = new choice();
+		$choice_false->id = "EFGH";
+		$choice_false->label = "1";
+		$choice_false->choicetext = "Falsch";
+		$choice_false->true = $this->mquestion->options->trueanswer == '292' ? false : true;
+		$question->add_choice($choice_false);
+		
+		$page_wrapper = new page_wrapper($question);
+		$export_data->add_page($page_wrapper);
+		$export_data->metadatardf_wrapper->add_question($question);
+	}
 }
 
 /**
@@ -154,6 +178,7 @@ class log_exporter extends qformat_exporter {
 	}
 	
 }
+
 
 
 

@@ -60,7 +60,7 @@ function addFolderToZip($dir, $zipArchive, $zipdir = '') {
    */
   function tempdir($dir, $prefix='', $mode=0777)
   {
-    $tmpfile = tempnam($dir, 'smart1');
+    $tmpfile = tempnam($dir, 'smart1_');
     unlink($tmpfile);
     $tmpfile = $tmpfile . "/";
     mkdir($tmpfile);
@@ -98,7 +98,13 @@ function addFolderToZip($dir, $zipArchive, $zipdir = '') {
   }
   
   function save_simplexml($simplexml, $file) {
-  	$result = $simplexml->asXML($file);
+  	$dom = new DOMDocument("1.0");
+  	$dom->preserveWhiteSpace = false;
+  	$dom->formatOutput = true;
+  	$dom->loadXML($simplexml->asXML());
+  	$result = $dom->save($file);
+  	
+  	//$result = $simplexml->asXML($file);
   	if(!$result) {
   		// TODO: error handling
   		return false;
