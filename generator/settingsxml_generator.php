@@ -3,9 +3,9 @@
 require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 
-class settingsxml_wrapper {
+class settingsxml_generator {
 
-	private static $settingsxml_template = "wrapper/templates/settings.xml";
+	private static $settingsxml_template = "generator/templates/settings.xml";
 
 	private $xml;
 
@@ -13,13 +13,11 @@ class settingsxml_wrapper {
 		global $CFG;
 
 		// Load settings.xml-template.
-		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . settingsxml_wrapper::$settingsxml_template;
+		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . settingsxml_generator::$settingsxml_template;
 		$this->xml = load_simplexml($filename);
 	}
 
 	private function generate_xml() {
-		error_logger::get_instance()->log_error("settingsxml_wrapper->generate_xml() called");
-
 		// Nothing to generate.
 	}
 

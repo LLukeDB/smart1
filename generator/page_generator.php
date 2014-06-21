@@ -3,7 +3,7 @@
 require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 
-class page_wrapper {
+class page_generator {
 
 	private $xml;
 	private $question;

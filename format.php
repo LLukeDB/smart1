@@ -29,11 +29,11 @@ require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 require_once ($CFG->dirroot . '/question/format/smart1/exporter/export.php');
 require_once ("$CFG->dirroot/question/format.php");
 require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
-require_once ($CFG->dirroot . '/question/format/smart1/wrapper/metadataxml_wrapper.php');
-require_once ($CFG->dirroot . '/question/format/smart1/wrapper/settingsxml_wrapper.php');
-require_once ($CFG->dirroot . '/question/format/smart1/wrapper/imsmanifest_wrapper.php');
-require_once ($CFG->dirroot . '/question/format/smart1/wrapper/metadatardf_wrapper.php');
-require_once ($CFG->dirroot . '/question/format/smart1/wrapper/page_wrapper.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/metadataxml_generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/settingsxml_generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/imsmanifest_generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/metadatardf_generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/page_generator.php');
 
 class qformat_smart1 extends qformat_default {
 	private static $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.

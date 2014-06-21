@@ -98,13 +98,13 @@ function addFolderToZip($dir, $zipArchive, $zipdir = '') {
   }
   
   function save_simplexml($simplexml, $file) {
-  	$dom = new DOMDocument("1.0");
-  	$dom->preserveWhiteSpace = false;
-  	$dom->formatOutput = true;
-  	$dom->loadXML($simplexml->asXML());
-  	$result = $dom->save($file);
+//   	$dom = new DOMDocument("1.0");
+//   	$dom->preserveWhiteSpace = false;
+//   	$dom->formatOutput = true;
+//   	$dom->loadXML($simplexml->asXML());
+//   	$result = $dom->save($file);
   	
-  	//$result = $simplexml->asXML($file);
+  	$result = $simplexml->asXML($file);
   	if(!$result) {
   		// TODO: error handling
   		return false;

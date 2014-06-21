@@ -4,7 +4,7 @@ require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 require_once ($CFG->dirroot . '/question/format/smart1/idgenerator.php');
 
-class metadatardf_wrapper {
+class metadatardf_generator {
 
 	private $xml;
 	private $questions;
@@ -41,7 +41,7 @@ class metadatardf_wrapper {
 	
 	function init() {
 		// TODO Add namespaces.
-		$xml = new SimpleXMLElement("<rdf></rdf>");
+		$xml = new SimpleXMLElement("<rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:senteo=\"http://www.smarttech.com/2008/senteo/\"></rdf:RDF>");
 		$doc = dom_import_simplexml($xml)->ownerDocument;
 		$doc->encoding = 'UTF-8';
 		$this->xml = $xml;

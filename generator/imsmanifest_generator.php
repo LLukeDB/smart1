@@ -3,9 +3,9 @@
 require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 
-class imsmanifest_wrapper {
+class imsmanifest_generator {
 
-	private static $template = "wrapper/templates/imsmanifest.xml";
+	private static $template = "generator/templates/imsmanifest.xml";
 
 	private $xml;
 
@@ -13,12 +13,12 @@ class imsmanifest_wrapper {
 		global $CFG;
 
 		// Load settings.xml-template.
-		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . imsmanifest_wrapper::$template;
+		$filename = $CFG->dirroot . qformat_smart1::get_plugin_dir() . imsmanifest_generator::$template;
 		$this->xml = load_simplexml($filename);
 	}
 
 	private function generate_xml() {
-		error_logger::get_instance()->log_error("simsmanifest_wrapper->generate_xml() called");
+		error_logger::get_instance()->log_error("simsmanifest_generator->generate_xml() called");
 
 		// Nothing to generate.
 	}
