@@ -1,10 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-
-<manifest identifier="id1" version="2006-01" smartnotebook:filesource="SMART Notebook for Windows Version=11.4.564.0" 
-	xmlns="http://www.imsglobal.org/xsd/imscp_v1p1" 
-	xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_v1p3" 
-	xmlns:smartnotebook="http://www.smarttech.com/2006-01/notebook" 
-	xmlns:smartgallery="http://www.smarttech.com/2006-01/gallery">
+<manifest xmlns="http://www.imsglobal.org/xsd/imscp_v1p1" xmlns:adlcp="http://www.adlnet.org/xsd/adlcp_v1p3" xmlns:smartnotebook="http://www.smarttech.com/2006-01/notebook" xmlns:smartgallery="http://www.smarttech.com/2006-01/gallery" identifier="id1" version="2006-01" smartnotebook:filesource="SMART Notebook for Windows Version=11.4.564.0">
 
 <metadata>
 	<schema>ADL SCORM</schema>
@@ -22,19 +17,11 @@
 
 <resources>
 	<resource identifier="group0_pages" href="page0.svg" type="webcontent" adlcp:scormType="asset">
-		<!--   
-		<file href="page0.svg"/>
-		<file href="page1.svg"/>
-		<file href="page2.svg"/>
-		-->
 	</resource>
+	
 	<resource identifier="pages" href="page0.svg" type="webcontent" adlcp:scormType="asset">
-	    <!--  
-		<file href="page0.svg"/>
-		<file href="page1.svg"/>
-		<file href="page2.svg"/>
-		-->
-	</resource>
+    </resource>
+
 	<resource identifier="images"/>
 	<resource identifier="sounds"/>
 	<resource identifier="attachments"/>

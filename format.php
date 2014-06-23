@@ -26,17 +26,21 @@
 require_once ("$CFG->libdir/xmlize.php");
 require_once ($CFG->dirroot . '/lib/uploadlib.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
-require_once ($CFG->dirroot . '/question/format/smart1/export.php');
+require_once ($CFG->dirroot . '/question/format/smart1/exporter/export.php');
 require_once ("$CFG->dirroot/question/format.php");
 require_once ($CFG->dirroot . '/question/format/smart1/logging.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/metadataxml_generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/settingsxml_generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/imsmanifest_generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/metadatardf_generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/page_generator.php');
 
 class qformat_smart1 extends qformat_default {
-	private $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.
-	private $settings_template    = "templates/settings.xml";
-	private $imsmanifest_template = "templates/imsmanifest.xml";
-	private $metadataxml_template = "templates/metadata.xml";
-	private $metadatardf_template = "templates/metadata.rdf";
-	private $page_template        = "templates/page.svg";
+	private static $plugin_dir = "/question/format/smart1/"; 				// Folder where the plugin is installed, relative to Moodle $CFG->dirroot.
+	
+	public static function get_plugin_dir() {
+		return qformat_smart1::$plugin_dir;
+	}
 	
 	/**
 	 * @return bool whether this plugin provides export functionality.
@@ -170,9 +174,8 @@ class qformat_smart1 extends qformat_default {
 		// $expout = $this->presave_process ( $expout );
 		
 		
-		
 		$exporter_factory = new qformat_exporter_factory();
-		$export_data = $this->init_export_data();
+		$export_data = new export_data();
 		
 		// Export all questions.
 		foreach ( $questions as $question ) {
@@ -190,7 +193,6 @@ class qformat_smart1 extends qformat_default {
 			else {
 				$exporter->export($export_data);				
 			}			
-			
 		}
 		
 		// Export logged errors.
@@ -201,15 +203,14 @@ class qformat_smart1 extends qformat_default {
 		$exporter->export($export_data);
 		
 		// Create zip-file from export_data.
-		$zip_file = "asdf";
-		$zip_file = $this->create_zip_from_export_data($export_data);
+		$zip_file = $export_data->toZIP();
 // 		$this->start_download($zip_file);
-// 		unlink($zip_file);
 
 		// Return the zip file.
 		$filehandle = fopen($zip_file, "r");
 		$filecontent = fread($filehandle, filesize($zip_file));
-		fclose($filehandle);		
+		fclose($filehandle);
+		unlink($zip_file);
 		return $filecontent;
 	}
 	
@@ -220,99 +221,6 @@ class qformat_smart1 extends qformat_default {
 	 */
 	protected function exportpostprocess() {
 		return true;
-	}
-	
-	/**
-	 * convert a single question object into text output in the given
-	 * format.
-	 * This must be overriden
-	 *
-	 * @param
-	 *        	object question question object
-	 * @return mixed question export text or null if not implemented
-	 */
-	protected function writequestion($question) {
-		global $OUTPUT, $CFG;
-		// if not overidden, then this is an error.
-		// $formatnotimplemented = get_string ( 'formatnotimplemented', 'question' );
-		// echo "<p>$formatnotimplemented</p>";
-		// echo get_string('test_output', 'qformat_smart1');
-		echo "dataroot: " . $CFG->dataroot;
-		echo $OUTPUT->notification ( get_string ( 'test_output', 'qformat_smart1' ) );
-		echo $OUTPUT->notification ( "test output notification" );
-		// debugging("DEBUG-> " . __FILE__ . " : " . __FUNCTION__ . " : " . __LINE__, DEBUG_DEVELOPER);
-		return null;
-	}
-	
-	private function init_export_data() {
-		global $CFG;
-		$export_data = new export_data();
-		
-		// Load settings.xml-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->settings_template;
-		$export_data->settings = load_simplexml($filename);
-		
-		// Load metadata.xml-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->metadataxml_template;
-		$export_data->metadataxml = load_simplexml($filename);
-		
-		// Load metadata.rdf-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->metadatardf_template;
-		$export_data->metadatardf = load_simplexml($filename);
-		
-		// Load imsmanifest.xml-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->imsmanifest_template;
-		$export_data->imsmanifest = load_simplexml($filename);
-		
-		// Load page.svg-template.
-		$filename = $CFG->dirroot . $this->plugin_dir . $this->page_template;
-		$export_data->page_template = load_simplexml($filename);
-		
-		return $export_data;
-	}
-	
-	private function create_zip_from_export_data($export_data) {
-		global $CFG;
-		
-		// Create temporary directory for data.
-		$moodletmpdir = $CFG->dataroot . "/temp/";
-		$tmpdir = tempdir($moodletmpdir, "smart_");
-		createDirStructure($tmpdir);
-		
-		// Write settings.xml to temporary directory.
-		$filename = $tmpdir . "settings.xml";
-		$xml_doc = $export_data->settings;
-		save_simplexml($xml_doc, $filename);
-		
-		// Write metadata.xml to temporary directory.
-		$filename = $tmpdir . "metadata.xml";
-		$xml_doc = $export_data->metadataxml;
-		save_simplexml($xml_doc, $filename);
-
-		// Write metadata.rdf to temporary directory.
-		$filename = $tmpdir . "metadata.rdf";
-		$xml_doc = $export_data->metadatardf;
-		save_simplexml($xml_doc, $filename);
-		
-		// Write imsmanifest.xml to temporary directory.
-		$filename = $tmpdir . "imsmanifest.xml";
-		$xml_doc = $export_data->imsmanifest;
-		save_simplexml($xml_doc, $filename);
-		
-		// Write pages to temporary directory.
-		$pages = $export_data->pages;
-		for ($i = 0; $i < count($pages); $i++) {
-			$filename = $tmpdir . "page" . $i . ".svg";
-			$xml_doc = $pages[$i];
-			save_simplexml($xml_doc, $filename);
-		}
-		
-		// Create zip file from temporary directory.		
-		$tmpfile = tempnam($moodletmpdir, 'smart_');
-		create_zip($tmpdir, $tmpfile);
-		//recurseRmdir($tmpdir);	// Commented out for development.
-		
-		return $tmpfile;
 	}
 	
 // 	private function start_download($zipfile) {
