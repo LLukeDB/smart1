@@ -2,8 +2,9 @@
 
 require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/generator.php');
 
-class imsmanifest_generator {
+class imsmanifest_generator extends file_generator {
 
 	private static $template = "generator/templates/imsmanifest.xml";
 
@@ -17,7 +18,7 @@ class imsmanifest_generator {
 		$this->xml = load_simplexml($filename);
 	}
 
-	private function generate_xml() {
+	protected function generate_xml() {
 		error_logger::get_instance()->log_error("simsmanifest_generator->generate_xml() called");
 
 		// Nothing to generate.

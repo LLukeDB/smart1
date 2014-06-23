@@ -3,8 +3,10 @@
 require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 require_once ($CFG->dirroot . '/question/format/smart1/idgenerator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/generator.php');
 
-class metadatardf_generator {
+
+class metadatardf_generator extends file_generator {
 
 	private $xml;
 	private $questions;
@@ -17,7 +19,7 @@ class metadatardf_generator {
 		array_push($this->questions, $question);
 	}
 	
-	private function generate_xml() {
+	protected function generate_xml() {
 		$this->init();
 		
 		foreach ($this->questions as $question) {
@@ -40,8 +42,8 @@ class metadatardf_generator {
 	}
 	
 	function init() {
-		// TODO Add namespaces.
-		$xml = new SimpleXMLElement("<rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:senteo=\"http://www.smarttech.com/2008/senteo/\"></rdf:RDF>");
+		$xml = simplexml_load_string("<rdf:RDF xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:senteo=\"http://www.smarttech.com/2008/senteo/\"></rdf:RDF>");
+		
 		$doc = dom_import_simplexml($xml)->ownerDocument;
 		$doc->encoding = 'UTF-8';
 		$this->xml = $xml;
@@ -51,62 +53,62 @@ class metadatardf_generator {
 	
 	function generate_answer_block($question) {
 		$xml = $this->xml;
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:nodeID", "blank." . $question->answer_block_id);
-		$description->addChild("xmlns:senteo:choicevalue", $question->get_true_choice_values());
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:nodeID", "blank." . $question->answer_block_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addChild("senteo:choicevalue", $question->get_true_choice_values(), "http://www.smarttech.com/2008/senteo/");
 		
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:nodeID", "blank." . $question->answer_block_id);
-		$description->addChild("xmlns:senteo:points", floor($question->points));
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:nodeID", "blank." . $question->answer_block_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addChild("senteo:points", $question->points, "http://www.smarttech.com/2008/senteo/");
 		
 		return true;
 	}
 	
 	function generate_choice_block($choice) {
 		$xml = $this->xml;
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:annotation." . $choice->choice_id);
-		$description->addChild("xmlns:senteo:assessmentrole", "http://www.smarttech.com/2008/senteo/assessmentrole#choice");
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:annotation." . $choice->choice_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addChild("senteo:assessmentrole", "http://www.smarttech.com/2008/senteo/assessmentrole#choice", "http://www.smarttech.com/2008/senteo/");
 		
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:annotation." . $choice->choice_id);
-		$description->addChild("xmlns:senteo:choicevalue", $choice->choice_value);
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:annotation." . $choice->choice_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addChild("senteo:choicevalue", $choice->choice_value, "http://www.smarttech.com/2008/senteo/");
 		
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:annotation." . $choice->choice_id);
-		$type = $description->addChild("xmlns:senteo:type", "");
-		$type->addAttribute("xmlns:rdf:resource", "http://www.smarttech.com/2008/notebook/Annotation");
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:annotation." . $choice->choice_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$type = $description->addChild("senteo:type", "", "http://www.smarttech.com/2008/senteo/");
+		$type->addAttribute("rdf:resource", "http://www.smarttech.com/2008/notebook/Annotation", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 		
 		return true;
 	}
 	
 	function generate_page_block($question) {
 		$xml = $this->xml;
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id);
-		$answer = $description->addChild("xmlns:senteo:answer", "");
-		$answer->addAttribute("xmlns:rdf:nodeID", "blank." . $question->answer_block_id);
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$answer = $description->addChild("senteo:answer", "", "http://www.smarttech.com/2008/senteo/");
+		$answer->addAttribute("rdf:nodeID", "blank." . $question->answer_block_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 		
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id);
-		$description->addChild("xmlns:senteo:assessmentrole", "http://www.smarttech.com/2008/senteo/assessmentrole#question");
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addChild("senteo:assessmentrole", "http://www.smarttech.com/2008/senteo/assessmentrole#question", "http://www.smarttech.com/2008/senteo/");
 		
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id);
-		$description->addChild("xmlns:senteo:choicelabelstyle", "http://www.smarttech.com/2008/senteo/choicelabelstyle#" . $question->choicelabelstyle);
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addChild("senteo:choicelabelstyle", "http://www.smarttech.com/2008/senteo/choicelabelstyle#" . $question->choicelabelstyle, "http://www.smarttech.com/2008/senteo/");
 		
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id);
-		$description->addChild("xmlns:senteo:note", "");
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addChild("senteo:note", $question->explanation, "http://www.smarttech.com/2008/senteo/");
 		
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id);
-		$description->addChild("xmlns:senteo:questionformat", "http://www.smarttech.com/2008/senteo/questionformat#" . $question->questionformat);
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addChild("senteo:questionformat", "http://www.smarttech.com/2008/senteo/questionformat#" . $question->questionformat, "http://www.smarttech.com/2008/senteo/");
 		
-		$description = $xml->addChild("xmlns:rdf:Description", "");
-		$description->addAttribute("xmlns:rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id);
-		$type = $description->addChild("xmlns:rdf:type", "");
-		$type->addAttribute("xmlns:rdf:resource", "http://www.smarttech.com/2008/notebook/Page");
+		$description = $xml->addChild("rdf:Description", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$description->addAttribute("rdf:about", "urn:com.smarttech.notebook:page." . $question->page_id, "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$type = $description->addChild("rdf:type", "", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
+		$type->addAttribute("rdf:resource", "http://www.smarttech.com/2008/notebook/Page", "http://www.w3.org/1999/02/22-rdf-syntax-ns#");
 		
 		return true;
 	}

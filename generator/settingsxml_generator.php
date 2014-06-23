@@ -2,8 +2,9 @@
 
 require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/generator.php');
 
-class settingsxml_generator {
+class settingsxml_generator extends file_generator {
 
 	private static $settingsxml_template = "generator/templates/settings.xml";
 
@@ -17,7 +18,7 @@ class settingsxml_generator {
 		$this->xml = load_simplexml($filename);
 	}
 
-	private function generate_xml() {
+	protected function generate_xml() {
 		// Nothing to generate.
 	}
 

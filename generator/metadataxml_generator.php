@@ -2,8 +2,10 @@
 
 require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
+require_once ($CFG->dirroot . '/question/format/smart1/generator/generator.php');
 
-class metadataxml_generator {
+
+class metadataxml_generator extends file_generator {
 	
 	private static $metadataxml_template = "generator/templates/metadata.xml";
 	
@@ -17,7 +19,7 @@ class metadataxml_generator {
 		$this->xml = load_simplexml($filename);
 	}
 	
-	private function generate_xml() {
+	protected function generate_xml() {
 		// write current date to metadata.xml
 		$date = date("Y-m-d\TH:i:s");
 		$this->xml->children('lom', true)->lifeCycle->children('smartgallery', true)->creationdatetime = $date;

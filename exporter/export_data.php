@@ -32,7 +32,7 @@ class export_data {
 		// Create temporary directory for data.
 		$moodletmpdir = $CFG->dataroot . "/temp/";
 		$tmpdir = tempdir($moodletmpdir, "smart_");
-		createDirStructure($tmpdir);
+		//createDirStructure($tmpdir);
 
 		// Write data to temporary directory.
 		$this->settingsxml_generator->save($tmpdir);

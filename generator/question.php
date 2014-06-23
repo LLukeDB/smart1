@@ -20,6 +20,7 @@ class question {
 	public $questiontext;
 	public $correct;
 	public $question_id;
+	public $explanation = "";
 	
 	public $choices;
 	
