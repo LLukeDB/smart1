@@ -36,7 +36,7 @@ class truefalse_exporter extends qformat_exporter {
 
 		// Set questionchoice 'Wahr' data.
 		$choice_true = new choice();
-		$choice_true->id = "EFGH";
+		$choice_true->choice_id = id_generator::get_instance()->generate_id();
 		$choice_true->label = "1";
 		$choice_true->choicetext = "Wahr";
 		$choice_true->true = $this->mquestion->options->trueanswer == '292' ? true : false;
@@ -44,7 +44,7 @@ class truefalse_exporter extends qformat_exporter {
 
 		// Set questionchoice 'Falsch' data.
 		$choice_false = new choice();
-		$choice_false->id = "EFGH";
+		$choice_false->choice_id = id_generator::get_instance()->generate_id();
 		$choice_false->label = "1";
 		$choice_false->choicetext = "Falsch";
 		$choice_false->true = $this->mquestion->options->trueanswer == '292' ? false : true;
@@ -53,11 +53,12 @@ class truefalse_exporter extends qformat_exporter {
 		$page_generator = new page_generator($question);
 		$export_data->add_page($page_generator);
 		$export_data->metadatardf_generator->add_question($question);
+		$export_data->imsmanifest_generator->add_page("page" . $page_num . ".svg");
 	}
 	
 	protected function set_common_question_data($question) {
 		$question->points = floor($this->mquestion->defaultmark);
-		$question->questiontext = strip_tags($this->mquestion->questiontext);
+		$question->questiontext = $this->mquestion->questiontext;
 		$question->explanation = strip_tags($this->mquestion->generalfeedback);
 	}
 }

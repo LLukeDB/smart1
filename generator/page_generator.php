@@ -3,15 +3,17 @@
 require_once ($CFG->dirroot . '/question/format/smart1/format.php');
 require_once ($CFG->dirroot . '/question/format/smart1/filetools.php');
 require_once ($CFG->dirroot . '/question/format/smart1/generator/generator.php');
+require_once ($CFG->dirroot . '/question/format/smart1/simplexml_helper.php');
 
 class page_generator extends file_generator {
 
 	private $xml;
 	private $question;
+	
+	private $ypos = 30;
 
 	public function __construct($question){
 		$this->question = $question;
-		$this->choices = array();
 	}
 	
 	public function save($dir) {
@@ -36,7 +38,7 @@ class page_generator extends file_generator {
 		$doc->encoding = 'UTF-8';
 		$svg->addAttribute("width", "800");
 		$svg->addAttribute("height", "600");
-		$svg->addAttribute("xml:id", $this->question->page_id, "xml");
+		$svg->addAttribute("xml:id", "page." . $this->question->page_id, "xml");
 		$svg->addChild("title", date("M d-H:s"));
 		$g = $svg->addChild("g");
 		$g->addAttribute("class", "foreground");
@@ -48,6 +50,13 @@ class page_generator extends file_generator {
 	private function generate_question() {
 		$g = $this->xml->g->addChild("g");
 		$g->addAttribute("class", "question");
+		$g->addAttribute("labelwidth", 16);
+		$g->addAttribute("language_direction", 1);
+		$g->addAttribute("RotationPoint", "(350.000000,270.000000)"); // TODO Calculate coordiantes.
+		$g->addAttribute("transform", "rotate(0.00,160.46,45.64)"); // TODO Calculate coordiantes.
+		$g->addAttribute("xml:id", "annotation." . id_generator::get_instance()->generate_id(), "xml");
+		$g->addAttribute("visible", 1);
+		
 		// Write votemetadata.
 		$votemetadata = $g->addChild("votemetadata");
 		$questiontext = $votemetadata->addChild("questiontext");
@@ -61,18 +70,10 @@ class page_generator extends file_generator {
 		$questiontext->addAttribute("likert", "");
 		
 		// Write 1st text-element.
-		$text = $g->addChild("text");
-		$text->addAttribute("transform", "translate(30, 30)");
-		$tspan = $text->addChild("tspan");
-		$tspan = $tspan->addChild("tspan");
-		$tspan = $tspan->addChild("tspan", $this->question->question_num);
+		$this->generate_text_element($g, $this->question->question_num, 30, false);
 		
 		// Write 2nd text-element.
-		$text = $g->addChild("text");
-		$text->addAttribute("transform", "translate(61, 30)");
-		$tspan = $text->addChild("tspan");
-		$tspan = $tspan->addChild("tspan");
-		$tspan = $tspan->addChild("tspan", $this->question->questiontext);
+		$this->generate_text_element($g, $this->question->questiontext, 60);
 		
 		return true;
 	}
@@ -80,25 +81,29 @@ class page_generator extends file_generator {
 	private function generate_choice($choice, $choice_num) {
 		$g = $this->xml->g->addChild("g");
 		$g->addAttribute("class", "questionchoice");
+		$g->addAttribute("xbk_transform", "rotate(0.00,113.57,128.92)"); // TODO Calculate coordinates.
+		$g->addAttribute("labelwidth", 66); // TODO Calculate width.
+		$g->addAttribute("language_direction", 1);
+		$g->addAttribute("RotationPoint", "(376.000000,353.281250)"); 	// TODO Calculate coordinates.
+		$g->addAttribute("transform", "rotate(0.00,113.57,128.92)"); 	// TODO Calculate coordinates.
+		$g->addAttribute("xml:id", "annotation." . $choice->choice_id, "xml");
+		$g->addAttribute("visible", 1);
+		
+		
+		// Write votemetadata.
 		$votemetadata = $g->addChild("votemetadata");
 		$choicetext = $votemetadata->addChild("choicetext");
 		$choicetext->addAttribute("label", $choice_num);
-	
-		$text = $g->addChild("text");
-		$ypos = ($choice_num - 1) * 60 + 110;
-		$text->addAttribute("transform", "translate(83," . $ypos . ")");
-		$tspan = $text->addChild("tspan");
-		$tspan = $tspan->addChild("tspan");
-		$tspan = $tspan->addChild("tspan", $choice->choicetext);
-	
-		$text = $g->addChild("text");
-		$ypos = $ypos + 30;
-		$text->addAttribute("transform", "translate(83, 30)");
-		$tspan = $text->addChild("tspan");
-		$tspan = $tspan->addChild("tspan");
-		$tspan = $tspan->addChild("tspan");
 		
-		$this->generate_true_false_label($g, $ypos);
+		$this->ypos += 25; // Add some vertial extra space.
+		$ypos = $this->ypos;
+		// Write 1st text-element.
+		$this->generate_text_element($g, $choice->choicetext, 83, false);
+	
+		// Write 2nd text-element.
+		$this->generate_text_element($g, "", 100);
+		
+		$this->generate_true_false_label($g, $ypos + 15);
 		
 		return true;
 	}
@@ -144,6 +149,107 @@ class page_generator extends file_generator {
 		$e->addAttribute("transform", "rotate(0.00,68.01,190.57)");
 		$e->addAttribute("xml:id", "annotation." . id_generator::get_instance()->generate_id(), "xml");
 		$e->addAttribute("visible", "1");
+	}
+	
+	private function generate_text_element($parent, $text, $xpos, $new_line=true) {
+		$rel_ypos = 0;
+		
+		// Write text attributes.
+		$text_elem = $parent->addChild("text");
+		$text_elem->addAttribute("transform", "translate($xpos," . $this->ypos . ") rotate(0.000,32.929,15.641) scale(1.000,1.000)"); // TODO Calculate coordinates.
+		$text_elem->addAttribute("RotationPoint", "(346.500000,240.000000)"); // TODO  Calculate coordinates.
+		$text_elem->addAttribute("xml:id", "annotation." . id_generator::get_instance()->generate_id(), "xml");
+		$text_elem->addAttribute("visible", 1);
+		$text_elem->addAttribute("smart-txt-ver", "2.10");
+		$text_elem->addAttribute("editwidth", "65.86"); // TODO Calculate width.
+		$text_elem->addAttribute("editheight", "31.28"); // TODO Calculate height.
+		$text_elem->addAttribute("forcewidth", "0");
+		$text_elem->addAttribute("forceheight", "0");
+		$text_elem->addAttribute("language_direction", "1");
+		$text_elem->addAttribute("textdirection", "0");
+		$text_elem->addAttribute("theme_anno_style", "0");
+		
+		$outer_tspan = $text_elem->addChild("tspan");
+		$outer_tspan->addAttribute("justification", "left");
+		$outer_tspan->addAttribute("bullet", "0");
+		
+		// Write text lines.
+		$lines = $this->get_rows($text);
+		foreach($lines as $line) {
+			$rel_ypos += 25;
+			$line_tspan = $outer_tspan->addChild("tspan");
+			$fragment_tspan = $line_tspan->addChild("tspan", $line);
+			$fragment_tspan->addAttribute("fill", "#000000");
+			$fragment_tspan->addAttribute("font-size", 28.000);
+			$fragment_tspan->addAttribute("font-family", "Arial");
+			$fragment_tspan->addAttribute("char-transform", "0.00 1.00 0.00 0.00 0.00 1.00");
+			$fragment_tspan->addAttribute("textLength", "100"); // TODO Calculate length.
+			$fragment_tspan->addAttribute("x", 0);	// TODO Calculate x.
+			$fragment_tspan->addAttribute("y", $rel_ypos);        
+		}
+		
+		// Increase y-position of page if wanted.
+		if($new_line) {
+			$this->ypos += $rel_ypos;
+		}
+		
+		return true;
+	}
+	
+	// Splits a string in several lines.
+	private function get_rows($text) {
+		$ntext = strip_tags($text, "<br><p>");
+		$ntext = str_replace("\r\n", " ", $ntext);
+		$ntext = str_replace("<p>", "", $ntext);
+		$rows = preg_split("/<p>|<\/p>|<br \/>/", $ntext);
+		
+// 		// Remove empty line at the beginning.
+// 		if(count($rows) > 0 && trim($rows[0]) == "") {
+// 			$rows = array_slice($rows, 1);
+// 		}
+		
+// 		// Remove empty line at the end.
+// 		if(count($rows) > 0 && trim($rows[count($rows) - 1]) == "") {
+// 			$rows = array_slice($rows, 0, count($rows) - 2);
+// 		}
+		
+		return $rows;
+	}
+	
+	function getTSpanGeometry($tspan) {
+		$svg = new SimpleXMLElement("<svg></svg>");
+		$svg->addAttribute("width", 1000);
+		$svg->addAttribute("height", 1400);
+		$text_elem = $svg->addChild("text", "");
+		$text_elem->addAttribute("transform", "translate(0, 500)");
+		simplexml_append_child($tspan, $text_elem);
+	
+		$im = new Imagick();
+		$im->readimageblob($svg->asXML());
+		$im->setImageFormat("png"); // png24
+		$im->trimimage(0);
+	
+		$geometry = $im->getImageGeometry();
+		$im->clear();
+		$im->destroy();
+		return $geometry;
+	}
+	
+	function getTextGeometry($text) {
+		$svg = new SimpleXMLElement("<svg></svg>");
+		$svg->addAttribute("width", 1000);
+		$svg->addAttribute("height", 1400);
+		simplexml_append_child($text, $svg);
+	
+		$im = new Imagick();
+		$im->readimageblob($svg->asXML());
+		$im->setImageFormat("png"); // png24
+		$im->trimimage(0);
+	
+		$geometry = $im->getImageGeometry();
+		$im->clear();
+		$im->destroy();
+		return $geometry;
 	}
 
 }
